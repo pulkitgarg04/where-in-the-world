@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -14,24 +13,25 @@
     <link rel="stylesheet" href="styles.css" />
     <script src="script.js" defer></script>
 </head>
-
 <body>
     <header class="header-container">
         <div class="header-content">
             <h2 class="title"><a href="/">Where in the world?</a></h2>
-            <p class="theme-changer"><i class="fa-regular fa-moon"></i>&nbsp;&nbsp;Dark Mode</p>
+            <p class="theme-changer" role="button" aria-label="Toggle dark mode">
+                <i class="fa-regular fa-moon"></i> Dark Mode
+            </p>
         </div>
     </header>
     <main>
         <div class="search-filter-container">
             <div class="search-container">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" placeholder="Search for a country...">
+                <input type="text" placeholder="Search for a country..." aria-label="Search for a country">
             </div>
-            <select class="filter-by-region">
+            <select class="filter-by-region" aria-label="Filter by region">
                 <option hidden>Filter by Region</option>
                 <option value="Africa">Africa</option>
-                <option value="America">America</option>
+                <option value="Americas">Americas</option>
                 <option value="Asia">Asia</option>
                 <option value="Europe">Europe</option>
                 <option value="Oceania">Oceania</option>
@@ -40,5 +40,4 @@
         <div class="countries-container"></div>
     </main>
 </body>
-
 </html>
