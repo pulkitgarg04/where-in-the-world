@@ -13,6 +13,12 @@ const languages = document.querySelector('.languages')
 const borderCountries = document.querySelector('.border-countries')
 const themeChanger = document.querySelector('.theme-changer')
 const timezones = document.querySelector('.timezones')
+const area = document.querySelector('.area')
+const continents = document.querySelector('.continents')
+const independent = document.querySelector('.independent')
+const unMember = document.querySelector('.un-member')
+const drivingSide = document.querySelector('.driving-side')
+const maps = document.querySelector('.maps')
 
 document.addEventListener("DOMContentLoaded", function () {
     document.title = `${countryName} - Countries List`;
@@ -47,7 +53,7 @@ fetch(`https://restcountries.com/v3.1/name/${countryName}?fullText=true`)
             nativeName.innerText = country.name.common
         }
 
-        if(country.name.official) {
+        if (country.name.official) {
             fullName.innerText = country.name.official;
         }
 
@@ -63,6 +69,15 @@ fetch(`https://restcountries.com/v3.1/name/${countryName}?fullText=true`)
 
         if (country.timezones) {
             timezones.innerText = country.timezones.join(', ')
+        }
+
+        if (country.area) area.innerText = `${country.area.toLocaleString('en-IN')} km²`
+        if (country.continents) continents.innerText = country.continents.join(', ')
+        independent.innerText = country.independent ? 'Yes' : 'No'
+        unMember.innerText = country.unMember ? 'Yes' : 'No'
+        if (country.car && country.car.side) drivingSide.innerText = country.car.side.charAt(0).toUpperCase() + country.car.side.slice(1)
+        if (country.maps && country.maps.googleMaps) {
+            maps.innerHTML = `<a href="${country.maps.googleMaps}" target="_blank" rel="noopener noreferrer">Google Maps</a>`
         }
 
         console.log(country);
@@ -82,6 +97,22 @@ fetch(`https://restcountries.com/v3.1/name/${countryName}?fullText=true`)
         }
     })
 
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme === 'dark') {
+    document.body.classList.add('dark')
+    themeChanger.innerHTML = `<i class="fa-regular fa-sun"></i>&nbsp;&nbsp;Light Mode`
+}
+
 themeChanger.addEventListener('click', () => {
     document.body.classList.toggle('dark')
+
+    const isDark = document.body.classList.contains('dark')
+
+    if (isDark) {
+        localStorage.setItem('theme', 'dark')
+    } else {
+        localStorage.setItem('theme', 'light')
+    }
+
+    themeChanger.innerHTML = `<i class="fa-regular ${isDark ? 'fa-sun' : 'fa-moon'}"></i>&nbsp;&nbsp;${isDark ? 'Light' : 'Dark'} Mode`
 })

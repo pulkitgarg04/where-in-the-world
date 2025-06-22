@@ -13,7 +13,7 @@ function debounce(func, delay) {
   };
 }
 
-fetch('https://restcountries.com/v3.1/all?fields=name,flags,capital,population,region')
+fetch('https://restcountries.com/v3.1/all?fields=name,flags,capital,population,region,area,continents')
   .then((res) => {
     if (!res.ok) throw new Error(`Failed to fetch countries: ${res.status}`);
     countriesContainer.innerHTML = '<p>Loading...</p>';
@@ -31,7 +31,7 @@ fetch('https://restcountries.com/v3.1/all?fields=name,flags,capital,population,r
 filterByRegion.addEventListener('change', (e) => {
   const region = e.target.value;
   if (!region) return;
-  fetch(`https://restcountries.com/v3.1/region/${region}?fields=name,flags,capital,population,region`)
+  fetch(`https://restcountries.com/v3.1/region/${region}?fields=name,flags,capital,population,region,area,continents`)
     .then((res) => {
       if (!res.ok) throw new Error(`Failed to fetch region ${region}: ${res.status}`);
       countriesContainer.innerHTML = '<p>Loading...</p>';
@@ -72,6 +72,8 @@ function renderCountries(data) {
           <p><b>Population: </b>${country.population.toLocaleString('en-IN')}</p>
           <p><b>Region: </b>${country.region}</p>
           <p><b>Capital: </b>${country.capital?.[0] || 'N/A'}</p>
+          <p><b>Area: </b>${country.area?.toLocaleString('en-IN') || 'N/A'} km²</p>
+          <p><b>Continent: </b>${country.continents?.[0] || 'N/A'}</p>
       </div>
     `;
     countriesContainer.append(countryCard);
@@ -96,9 +98,22 @@ searchInput.addEventListener('input', debounce((e) => {
   renderCountries(filteredCountries);
 }, 300));
 
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme === 'dark') {
+  document.body.classList.add('dark');
+  themeChanger.innerHTML = `<i class="fa-regular fa-sun"></i> Light Mode`;
+}
+
 themeChanger.addEventListener('click', () => {
   document.body.classList.toggle('dark');
 
   const isDark = document.body.classList.contains('dark');
+
+  if (isDark) {
+    localStorage.setItem('theme', 'dark');
+  } else {
+    localStorage.setItem('theme', 'light');
+  }
+
   themeChanger.innerHTML = `<i class="fa-regular ${isDark ? 'fa-sun' : 'fa-moon'}"></i> ${isDark ? 'Light' : 'Dark'} Mode`;
 });
